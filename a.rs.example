@@ -1,0 +1,13 @@
+use text_io::read;
+
+fn solve() {
+
+}
+
+fn main() {
+    let t: u32 = read!();
+
+    for _ in 0..t {
+        solve();
+    }
+}
