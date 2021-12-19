@@ -1,17 +1,18 @@
 /**
  * - {name}/
  *   - Cargo.toml
+ *   - a.txt
+ *   - b.txt
+ *   - c.txt
+ *   - d.txt
+ *   - e.txt
+ *   - f.txt
  *   - src/
  *     - a.rs
- *     - a.txt
  *     - b.rs
- *     - b.txt
  *     - c.rs
- *     - c.txt
  *     - d.rs
- *     - d.txt
  *     - e.rs
- *     - e.txt
  *     - f.rs
  */
 
@@ -42,18 +43,11 @@ try {
 }
 
 const fileList = [
-  "Cargo.toml",
-  "src/a.rs",
   "a.txt",
-  "src/b.rs",
   "b.txt",
-  "src/c.rs",
   "c.txt",
-  "src/d.rs",
   "d.txt",
-  "src/e.rs",
   "e.txt",
-  "src/f.rs",
   "f.txt",
 ];
 
@@ -61,14 +55,18 @@ await Promise.all(
   fileList.map(async (f) => await ensureFile(`./${name}/${f}`)),
 );
 
-const cargoRes = await fetch("https://raw.githubusercontent.com/Clause321/codeforces-utils/master/Cargo.toml.example");
+const cargoRes = await fetch(
+  "https://raw.githubusercontent.com/Clause321/codeforces-utils/master/Cargo.toml.example",
+);
 const cargoText = await cargoRes.text();
 await Deno.writeTextFile(
   `./${name}/Cargo.toml`,
   cargoText.replace("{name}", name),
 );
 
-const rustRes = await fetch("https://raw.githubusercontent.com/Clause321/codeforces-utils/master/a.rs.example");
+const rustRes = await fetch(
+  "https://raw.githubusercontent.com/Clause321/codeforces-utils/master/a.rs.example",
+);
 const rustText = await rustRes.text();
 await Promise.all([
   "a",
@@ -77,4 +75,6 @@ await Promise.all([
   "d",
   "e",
   "f",
-].map(async (c) => await Deno.writeTextFile(`./${name}/src/${c}.rs`, rustText)));
+].map(async (c) =>
+  await Deno.writeTextFile(`./${name}/src/${c}.rs`, rustText)
+));
