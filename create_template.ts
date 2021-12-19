@@ -61,13 +61,15 @@ await Promise.all(
   fileList.map(async (f) => await ensureFile(`./${name}/${f}`)),
 );
 
-const cargoText = await Deno.readTextFile("./Cargo.toml.example");
+const cargoRes = await fetch("https://raw.githubusercontent.com/Clause321/codeforces-utils/master/Cargo.toml.example");
+const cargoText = await cargoRes.text();
 await Deno.writeTextFile(
   `./${name}/Cargo.toml`,
   cargoText.replace("{name}", name),
 );
 
-const rustText = await Deno.readTextFile("./a.rs.example");
+const rustRes = await fetch("https://raw.githubusercontent.com/Clause321/codeforces-utils/master/a.rs.example");
+const rustText = await rustRes.text();
 await Promise.all([
   "a",
   "b",
