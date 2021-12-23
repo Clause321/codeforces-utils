@@ -78,3 +78,9 @@ await Promise.all([
 ].map(async (c) =>
   await Deno.writeTextFile(`./${name}/src/${c}.rs`, rustText)
 ));
+
+const buildRes = await fetch(
+  "https://raw.githubusercontent.com/Clause321/codeforces-utils/master/build.rs",
+);
+const buildText = await buildRes.text();
+await Deno.writeTextFile(`./${name}/build.rs`, buildText);
