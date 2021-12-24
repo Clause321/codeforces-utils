@@ -49,6 +49,13 @@ const fileList = [
   "d.txt",
   "e.txt",
   "f.txt",
+  "build.rs",
+  "src/a.rs",
+  "src/b.rs",
+  "src/c.rs",
+  "src/d.rs",
+  "src/e.rs",
+  "src/f.rs",
 ];
 
 await Promise.all(
