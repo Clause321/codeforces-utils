@@ -1,5 +1,7 @@
 /**
  * - {name}/
+ *   - .vscode
+ *     - workspace.code-workspace
  *   - Cargo.toml
  *   - a.txt
  *   - b.txt
