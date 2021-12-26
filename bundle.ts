@@ -31,7 +31,7 @@
  *     - h.rs
  */
 
-import { ensureDir, ensureFile } from "https://deno.land/std@0.118.0/fs/mod.ts";
+import { ensureDir } from "https://deno.land/std@0.118.0/fs/mod.ts";
 
 if (Deno.args.length !== 1) {
   throw new Error("Please use one commnad line argument.");
