@@ -1,0 +1,32 @@
+# For more information see: https://github.com/denoland/setup-deno
+
+name: Build Binaries
+
+on:
+  [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Setup repo
+      uses: actions/checkout@v2
+      
+    - name: Setup Deno
+      uses: denoland/setup-deno@v1
+      with:
+        deno-version: v1.x
+
+    - name: Build create_template Windows
+      run: deno compile --allow-read --allow-write --allow-net --target x86_64-pc-windows-msvc -o create_template.exe create_template.ts
+      
+    - name: Build bundle Windows
+      run: deno compile --allow-read --allow-write --allow-net --target x86_64-pc-windows-msvc -o bundle.exe bundle.ts
+      
+    - name: Relase
+      uses: softprops/action-gh-release@v1
+      with:
+        files: |
+          create_template.exe
+          bundle.exe
