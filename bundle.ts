@@ -7,6 +7,8 @@
  *   - d.txt
  *   - e.txt
  *   - f.txt
+ *   - g.txt
+ *   - h.txt
  *   - src/
  *     - a.rs
  *     - b.rs
@@ -14,6 +16,8 @@
  *     - d.rs
  *     - e.rs
  *     - f.rs
+ *     - g.rs
+ *     - h.rs
  *   - bundle/
  *     - a.rs
  *     - b.rs
@@ -21,6 +25,8 @@
  *     - d.rs
  *     - e.rs
  *     - f.rs
+ *     - g.rs
+ *     - h.rs
  */
 
 import { ensureDir, ensureFile } from "https://deno.land/std@0.118.0/fs/mod.ts";
@@ -47,6 +53,8 @@ await Promise.all([
   "d",
   "e",
   "f",
+  "g",
+  "h",
 ].map(async (c) => {
   const text = await Deno.readTextFile(`${path}/src/${c}.rs`);
   await Deno.writeTextFile(

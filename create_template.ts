@@ -7,6 +7,8 @@
  *   - d.txt
  *   - e.txt
  *   - f.txt
+ *   - g.txt
+ *   - h.txt
  *   - src/
  *     - a.rs
  *     - b.rs
@@ -14,6 +16,8 @@
  *     - d.rs
  *     - e.rs
  *     - f.rs
+ *     - g.rs
+ *     - h.rs
  */
 
 import { ensureDir, ensureFile } from "https://deno.land/std@0.118.0/fs/mod.ts";
@@ -49,6 +53,8 @@ const fileList = [
   "d.txt",
   "e.txt",
   "f.txt",
+  "g.txt",
+  "h.txt",
   "build.rs",
   "src/a.rs",
   "src/b.rs",
@@ -56,6 +62,8 @@ const fileList = [
   "src/d.rs",
   "src/e.rs",
   "src/f.rs",
+  "src/g.rs",
+  "src/h.rs",
 ];
 
 await Promise.all(
@@ -82,6 +90,8 @@ await Promise.all([
   "d",
   "e",
   "f",
+  "g",
+  "h",
 ].map(async (c) =>
   await Deno.writeTextFile(`./${name}/src/${c}.rs`, rustText)
 ));
