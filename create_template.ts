@@ -134,7 +134,7 @@ const workspaceConfig = {
       },
       args: [],
       cwd: "${workspaceFolder:Main}",
-      stdio: ["${workspaceFolder:Main}/e/txt", null],
+      stdio: ["${workspaceFolder:Main}/" + l + ".txt", null],
     })),
   },
 };
