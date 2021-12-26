@@ -23,12 +23,20 @@ jobs:
     - name: Build create_template Windows
       run: deno compile --allow-read --allow-write --allow-net --target x86_64-pc-windows-msvc -o create_template.exe create_template.ts
       
+    - name: Build create_template MacOS
+      run: deno compile --allow-read --allow-write --allow-net --target x86_64-apple-darwin -o create_template create_template.ts
+      
     - name: Build bundle Windows
       run: deno compile --allow-read --allow-write --allow-net --target x86_64-pc-windows-msvc -o bundle.exe bundle.ts
+      
+    - name: Build bundle MacOS
+      run: deno compile --allow-read --allow-write --allow-net --target x86_64-apple-darwin -o bundle bundle.ts
       
     - name: Relase
       uses: softprops/action-gh-release@v1
       with:
         files: |
           create_template.exe
+          create_template
           bundle.exe
+          bundle
