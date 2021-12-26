@@ -8,3 +8,5 @@ Scripts for codeforces
 > deno compile --allow-read --allow-write --allow-net bundle.ts
 
 > bundle.exe .
+
+https://github.com/Clause321/codeforces-utils/releases
