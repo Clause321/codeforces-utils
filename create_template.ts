@@ -46,29 +46,30 @@ try {
   }
 }
 
+const letters = [
+  "a",
+  "b",
+  "c",
+  "d",
+  "e",
+  "f",
+  "g",
+  "h",
+];
+
+/* CREATE FILES */
+
 const fileList = [
-  "a.txt",
-  "b.txt",
-  "c.txt",
-  "d.txt",
-  "e.txt",
-  "f.txt",
-  "g.txt",
-  "h.txt",
+  ...letters.flatMap((l) => [`${l}.txt`, `src/${l}.rs`]),
   "build.rs",
-  "src/a.rs",
-  "src/b.rs",
-  "src/c.rs",
-  "src/d.rs",
-  "src/e.rs",
-  "src/f.rs",
-  "src/g.rs",
-  "src/h.rs",
+  ".vscode/workspace.code-workspace",
 ];
 
 await Promise.all(
   fileList.map(async (f) => await ensureFile(`./${name}/${f}`)),
 );
+
+/* WRITE CARGO */
 
 const cargoRes = await fetch(
   "https://raw.githubusercontent.com/Clause321/codeforces-utils/master/Cargo.toml.example",
@@ -79,25 +80,63 @@ await Deno.writeTextFile(
   cargoText.replace("{name}", name),
 );
 
+/* WRITE SRC */
+
 const rustRes = await fetch(
   "https://raw.githubusercontent.com/Clause321/codeforces-utils/master/a.rs.example",
 );
 const rustText = await rustRes.text();
-await Promise.all([
-  "a",
-  "b",
-  "c",
-  "d",
-  "e",
-  "f",
-  "g",
-  "h",
-].map(async (c) =>
-  await Deno.writeTextFile(`./${name}/src/${c}.rs`, rustText)
-));
+await Promise.all(
+  letters.map(async (c) =>
+    await Deno.writeTextFile(`./${name}/src/${c}.rs`, rustText)
+  ),
+);
+
+/* WRITE BUILD */
 
 const buildRes = await fetch(
   "https://raw.githubusercontent.com/Clause321/codeforces-utils/master/build.rs",
 );
 const buildText = await buildRes.text();
 await Deno.writeTextFile(`./${name}/build.rs`, buildText);
+
+/* WRITE WORKSPACE */
+const workspaceConfig = {
+  folders: [
+    { name: "Main", path: ".." },
+    { name: "Parent", path: "..\\.." },
+    { name: "Codeforces Utils", path: "..\\..\\..\\codeforces-utils" },
+  ],
+  settings: {
+    "deno.enable": true,
+    "deno.lint": true,
+    "deno.unstable": true,
+  },
+  launch: {
+    version: "0.2.0",
+    configurations: letters.map((l) => ({
+      // https://github.com/vadimcn/vscode-lldb/blob/master/MANUAL.md
+      type: "lldb",
+      request: "launch",
+      name: `Debug ${l}`,
+      cargo: {
+        args: [
+          "build",
+          `--bin=${l}`,
+          `--package=${name}`,
+        ],
+        filter: {
+          name: l,
+          kind: "bin",
+        },
+      },
+      args: [],
+      cwd: "${workspaceFolder:Main}",
+      stdio: ["${workspaceFolder:Main}/e/txt", null],
+    })),
+  },
+};
+await Deno.writeTextFile(
+  `./${name}/.vscode/workspace.code-workspace`,
+  JSON.stringify(workspaceConfig),
+);
