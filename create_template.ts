@@ -140,5 +140,5 @@ const workspaceConfig = {
 };
 await Deno.writeTextFile(
   `./${name}/.vscode/workspace.code-workspace`,
-  JSON.stringify(workspaceConfig),
+  JSON.stringify(workspaceConfig, null, 2),
 );
