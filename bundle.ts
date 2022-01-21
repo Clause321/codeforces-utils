@@ -31,7 +31,8 @@
  *     - h.rs
  */
 
-import { ensureDir } from "https://deno.land/std@0.118.0/fs/mod.ts";
+import { ensureDir } from "https://deno.land/std@0.122.0/fs/mod.ts";
+import { parse } from "https://deno.land/std@0.122.0/encoding/toml.ts";
 
 if (Deno.args.length !== 1) {
   throw new Error("Please use one commnad line argument.");
@@ -48,6 +49,17 @@ const textIO = await textIORes.text();
 const textIOSan = textIO.replace("let stdin: &mut", "let stdin: &mut dyn")
   .split("\n").filter((line) => !line.startsWith("//")).join("\n");
 
+const cargoText = await Deno.readTextFile(`${path}/Cargo.toml`);
+const cargo = parse(cargoText) as {
+  dependencies: {
+    wyf_lib: {
+      path: string;
+    };
+  };
+};
+const myLibPath = cargo.dependencies.wyf_lib.path;
+const libText = await Deno.readTextFile(`${path}/${myLibPath}/src/lib.rs`);
+
 await Promise.all([
   "a",
   "b",
@@ -61,6 +73,7 @@ await Promise.all([
   const text = await Deno.readTextFile(`${path}/src/${c}.rs`);
   await Deno.writeTextFile(
     `${path}/bundle/${c}.rs`,
-    textIOSan + text.replace("use text_io", "// use text_io"),
+    (text + textIOSan + libText).replace("use text_io", "// use text_io")
+      .replace("use wyf_lib", "// use wyf_lib"),
   );
 }));
