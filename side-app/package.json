@@ -9,6 +9,7 @@
     "@types/react": "^17.0.38",
     "@vitejs/plugin-react": "^1.0.7",
     "esbuild": "0.13.4",
-    "vite": "^2.7.2"
+    "vite": "^2.7.2",
+    "vite-plugin-tauri": "^0.1.12"
   }
 }

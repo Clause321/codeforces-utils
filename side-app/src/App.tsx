@@ -86,7 +86,6 @@ export default function App() {
         selectedKey={selectedContest || undefined}
         onChange={(_e, item) => setSelectedContest(item.key)}
       />
-      <Text>Hello Codeforces</Text>
     </div>
   );
 }
