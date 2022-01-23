@@ -1,11 +1,11 @@
-use text_io::read;
+use wyf_lib::*;
 
 fn solve() {
 
 }
 
 fn main() {
-    let t: usize = read!();
+    let t: usize = read();
 
     for _ in 0..t {
         solve();

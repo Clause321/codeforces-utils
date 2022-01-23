@@ -5,6 +5,7 @@ edition = "2021"
 
 [dependencies]
 text_io = "0.1.9"
+wyf_lib = { path = "../my_lib" }
 
 [[bin]]
 name = "a"
