@@ -1,12 +1,14 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import { Text } from "@fluentui/react";
 import {
   Dropdown,
   IDropdownOption,
   DropdownMenuItemType,
+  CompoundButton,
 } from "@fluentui/react";
 import { fetch } from "@tauri-apps/api/http";
+import { open } from "@tauri-apps/api/dialog";
+import Clock from "./Clock";
 
 type Phase =
   | "BEFORE"
@@ -30,6 +32,7 @@ function contest2Option(c: Contest): IDropdownOption {
   return {
     key: c.id,
     text: c.name,
+    data: c,
   };
 }
 
@@ -64,12 +67,14 @@ export default function App() {
   const [errors, setErrors] = useState<string>(null);
   const [contests, setContests] = useState<Contest[]>([]);
   const [selectedContest, setSelectedContest] = useState(null);
+
+  const [selectedPath, setSelectedPath] = useState(null);
   useEffect(() => {
     (async () => {
       const res = await fetch<{
         status: string;
         result: Contest[];
-      }>("https://codeforces.com/api/contest.list");
+      }>("https://codeforces.com/api/contest.list?gym=false");
       if (res.ok && res.data.status == "OK") {
         setContests(res.data.result);
       } else {
@@ -77,15 +82,31 @@ export default function App() {
       }
     })();
   }, [setContests, setErrors]);
+
+  const chooseCodePath = async () => {
+    const path = await open({ directory: true });
+    setSelectedPath(path);
+  };
+
   return (
-    <div>
+    <div className="container">
       <Dropdown
         label="Contest"
         placeholder="Choose a contest"
         options={buildContestOptions(contests)}
-        selectedKey={selectedContest || undefined}
-        onChange={(_e, item) => setSelectedContest(item.key)}
+        selectedKey={selectedContest?.key || undefined}
+        onChange={(_e, item) => setSelectedContest(item.data)}
+        className="contest_option"
       />
+      <CompoundButton
+        text="Choose code path"
+        onClick={chooseCodePath}
+        allowDisabledFocus
+        secondaryText={selectedPath}
+        className="path"
+      />
+
+      <Clock contest={selectedContest} />
     </div>
   );
 }
